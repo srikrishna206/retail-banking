@@ -67,9 +67,10 @@ jobs:
       - name: Build & Push Docker Image
         uses: docker/build-push-action@v6
         with:
-          context: .
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/retail-banking:latest
+              context: .
+              push: true
+              tags: ${{ secrets.DOCKER_USERNAME }}/retail-banking:latest
+
 
   deploy:
     runs-on: ubuntu-latest
