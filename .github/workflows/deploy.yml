@@ -21,10 +21,10 @@ jobs:
           java-version: 21
           cache: maven
 
-      - name: Build with Maven
+      - name: Build with Maven (skip Sonar)
         run: mvn clean package -DskipTests -Dsonar.skip=true
 
-      - name: Run Unit Tests
+      - name: Run Unit Tests (skip Sonar)
         run: mvn test -Dsonar.skip=true
 
       - name: Upload JAR Artifact
@@ -76,6 +76,13 @@ jobs:
     needs: docker
 
     steps:
+      - name: Check SSH Secrets
+        run: |
+          if [ -z "${{ secrets.SERVER_HOST }}" ] || [ -z "${{ secrets.SERVER_USER }}" ] || [ -z "${{ secrets.SERVER_SSH_KEY }}" ]; then
+            echo "Error: One or more server SSH secrets are missing!"
+            exit 1
+          fi
+
       - name: SSH to Server & Deploy
         uses: appleboy/ssh-action@v1.2.0
         with:
