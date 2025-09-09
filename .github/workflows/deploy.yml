@@ -3,7 +3,7 @@ name: CI/CD - Retail Banking
 on:
   push:
     branches:
-      - master   # or "main" if that's your default branch
+      - master   # change to "main" if that's your default branch
   pull_request:
 
 jobs:
@@ -22,7 +22,10 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn clean package -DskipTests
+        run: mvn clean package -DskipTests -Dsonar.skip=true
+
+      - name: Run Unit Tests
+        run: mvn test -Dsonar.skip=true
 
       - name: Upload JAR Artifact
         uses: actions/upload-artifact@v4
